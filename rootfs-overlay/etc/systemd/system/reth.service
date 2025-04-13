@@ -1,0 +1,13 @@
+[Unit]
+Description=Reth Ethereum Execution Client
+After=network.target
+
+[Service]
+ExecStart=/usr/bin/reth node \
+    --chain mainnet \
+    --rpc.enabled true \
+    --rpc.port 8545
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target

@@ -1,0 +1,10 @@
+[Unit]
+Description=Lighthouse Ethereum Consensus Client
+After=network.target
+
+[Service]
+ExecStart=/usr/bin/lighthouse bn --network prater --http
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target
