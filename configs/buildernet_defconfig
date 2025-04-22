@@ -1,74 +1,61 @@
-# -----------------------------------------------------------------------------
-# Target architecture and toolchain
-# -----------------------------------------------------------------------------
+# Architecture
 BR2_x86_64=y
-BR2_TOOLCHAIN_BUILDROOT_GLIBC=y
+BR2_TARGET_GENERIC_ROOT_PASSWD="FlashBotsBuilderNode"
 
-# -----------------------------------------------------------------------------
-# Kernel + matching headers
-# -----------------------------------------------------------------------------
+
+# Toolchain settings
+BR2_TOOLCHAIN_BUILDROOT_GLIBC=y
+BR2_TOOLCHAIN_BUILDROOT_GLIBC=y
+BR2_TOOLCHAIN_HAS_CXX=y
+BR2_TOOLCHAIN_BUILDROOT_CXX=y
+BR2_TOOLCHAIN_BUILDROOT=y
+BR2_INSTALL_LIBSTDCPP=y
+BR2_PACKAGE_LIBSIGC=y
+BR2_PACKAGE_OPENSSL=y
+BR2_PACKAGE_LIBOPENSSL_BIN=y
+BR2_PACKAGE_CA_CERTIFICATES=y
+
+# System configuration
+BR2_INIT_SYSTEMD=y      
+BR2_TARGET_GENERIC_HOSTNAME="buildernet"
+BR2_TARGET_GENERIC_ISSUE="buildernet ethereum node"
+BR2_TARGET_GENERIC_GETTY_PORT="tty1"
+
+# Kernel
 BR2_LINUX_KERNEL=y
 BR2_LINUX_KERNEL_CUSTOM_VERSION=y
 BR2_LINUX_KERNEL_CUSTOM_VERSION_VALUE="6.1.131"
-BR2_LINUX_KERNEL_DEFCONFIG="x86_64"
+BR2_LINUX_KERNEL_DEFCONFIG="x86_64"  
+BR2_LINUX_KERNEL_INSTALL_TARGET=y   
 BR2_KERNEL_HEADERS_6_1=y
 
-# -----------------------------------------------------------------------------
-# Systemd init
-# -----------------------------------------------------------------------------
-BR2_INIT_SYSTEMD=y
-BR2_SYSTEMD_LOGIND=n
-BR2_PACKAGE_SYSTEMD_UTILS=n
-BR2_PACKAGE_SYSTEMD_NETWORKD=n
-BR2_SYSTEMD_RESOLVE=n
-BR2_SYSTEMD_NTP=y
+# Bootloader
+BR2_TARGET_GRUB2=y
+BR2_TARGET_GRUB2_I386_PC=y
+BR2_TARGET_GRUB2_INSTALL_TOOLS=y
 
-# -----------------------------------------------------------------------------
-# Minimal packages
-# -----------------------------------------------------------------------------
-BR2_PACKAGE_BUSYBOX=y
-BR2_PACKAGE_DHCP_CLIENT=y
+# Host utilities for image creation
+BR2_PACKAGE_HOST_GENIMAGE=y
 
-# -----------------------------------------------------------------------------
-# File system + disk image
-# -----------------------------------------------------------------------------
-# We'll produce an ext4 rootfs
-BR2_TARGET_ROOTFS_EXT4=y
-BR2_GENERATE_EXT4_IMAGE=y
-
-# 64-bit ext support
+# Filesystem images
+BR2_TARGET_ROOTFS_EXT2=y
 BR2_TARGET_ROOTFS_EXT2_4=y
-
-# Size / inodes
-BR2_TARGET_ROOTFS_EXT4_SIZE="256M"
-BR2_TARGET_ROOTFS_EXT4_RESERVED_BLOCKS_PERCENT="0"
-BR2_TARGET_ROOTFS_EXT4_EXTRA_INODES=0
-
-# Produce a disk image
-BR2_TARGET_ROOTFS_DISKIMG=y
-# Split rootfs = yes => places /boot partition for Syslinux + separate root partition
-BR2_TARGET_ROOTFS_DISKIMG_PARTITION_SPLIT_ROOTFS=y
-BR2_TARGET_ROOTFS_DISKIMG_PARTITION_ALIGNMENT=4096
-
-# -----------------------------------------------------------------------------
-# Syslinux (for BIOS bootloader on x86_64)
-# -----------------------------------------------------------------------------
-BR2_PACKAGE_HOST_SYSLINUX=y
-
-# -----------------------------------------------------------------------------
-# Overlays (copy your static binaries / config / .service files)
-# -----------------------------------------------------------------------------
+BR2_TARGET_ROOTFS_EXT2_SIZE="512M"
 BR2_ROOTFS_OVERLAY="rootfs-overlay"
+ 
+# Post-image script to generate final disk image with multiple partitions:
+BR2_ROOTFS_POST_IMAGE_SCRIPT="board/buildernet/genimage.sh"
 
-# -----------------------------------------------------------------------------
-# Recommended host utilities for partitioning
-# (Buildroot should auto-select parted/sfdisk if needed, but these ensure no missing tools)
-# -----------------------------------------------------------------------------
-BR2_PACKAGE_HOST_E2FSPROGS=y
-BR2_PACKAGE_HOST_DOSFSTOOLS=y
-BR2_PACKAGE_HOST_MTOOLS=y
-BR2_PACKAGE_HOST_PARTED=y
+# Network
+BR2_SYSTEMD_NETWORKD=y
+BR2_PACKAGE_SYSTEMD_NETWORKD=y
+BR2_SYSTEMD_RESOLVE=y
+BR2_PACKAGE_IPTABLES=y
 
-# -----------------------------------------------------------------------------
-# End
-# -----------------------------------------------------------------------------
+#SSH
+#BR2_PACKAGE_OPENSSH=y
+#BR2_PACKAGE_OPENSSH_SERVER=y
+#BR2_PACKAGE_OPENSSH_CLIENT=y
+#BR2_PACKAGE_OPENSSH_KEY_UTILS=y
+#BR2_PACKAGE_OPENSSH_KEYGEN=y
+

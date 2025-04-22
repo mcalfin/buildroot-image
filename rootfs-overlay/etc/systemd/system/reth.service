@@ -4,9 +4,13 @@ After=network.target
 
 [Service]
 ExecStart=/usr/bin/reth node \
-    --chain mainnet \
-    --rpc.enabled true \
-    --rpc.port 8545
+    --chain hoodi \
+    --datadir /data/reth \
+    --log.file.directory /data/reth/logs \
+    --http \
+    --http.api all \
+    --http.port 8545 \
+    --http.addr 0.0.0.0
 Restart=on-failure
 
 [Install]
