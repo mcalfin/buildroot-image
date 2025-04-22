@@ -20,7 +20,7 @@ mkdir -p "$HOST_OUTPUT_DIR"
 docker pull "$DOCKER_IMAGE"
 
 echo "Running container as $CONTAINER_NAME..."
-docker run --rm -it \
+docker run --rm \
   --name "$CONTAINER_NAME" \
   -v "$HOST_DIR":"$WORKDIR_IN_CONTAINER":rw \
   -w "$WORKDIR_IN_CONTAINER" \
