@@ -8,6 +8,7 @@ CONFIG_NAME="buildernet_defconfig"
 HOST_DIR="$PWD"
 BUILDROOT_DIR="$HOST_DIR/buildroot"
 CONFIGS_DIR="$HOST_DIR/configs"
+BOARD_DIR="$HOST_DIR/board/buildernet"
 ROOTFS_OVERLAY_DIR="$HOST_DIR/rootfs-overlay"
 HOST_OUTPUT_DIR="$HOST_DIR/artifacts"
 
@@ -23,7 +24,6 @@ docker run --rm -it \
   --name "$CONTAINER_NAME" \
   -v "$HOST_DIR":"$WORKDIR_IN_CONTAINER":rw \
   -w "$WORKDIR_IN_CONTAINER" \
-  -e DEBIAN_FRONTEND=noninteractive \
   -e FORCE_UNSAFE_CONFIGURE=1 \
   "$DOCKER_IMAGE" \
   bash -c "
@@ -35,8 +35,10 @@ docker run --rm -it \
     mkdir -p $INTERNAL_BUILD_DIR
     cp -R $WORKDIR_IN_CONTAINER/buildroot/* $INTERNAL_BUILD_DIR/
     cp $WORKDIR_IN_CONTAINER/configs/$CONFIG_NAME $INTERNAL_BUILD_DIR/configs/
-    mkdir -p $INTERNAL_BUILD_DIR/board/rootfs-overlay
-    cp -a $WORKDIR_IN_CONTAINER/rootfs-overlay/* $INTERNAL_BUILD_DIR/board/rootfs-overlay/
+    mkdir -p $INTERNAL_BUILD_DIR/rootfs-overlay
+    cp -a $WORKDIR_IN_CONTAINER/rootfs-overlay/* $INTERNAL_BUILD_DIR/rootfs-overlay/
+    mkdir -p $INTERNAL_BUILD_DIR/board/buildernet
+    cp -a $WORKDIR_IN_CONTAINER/board/buildernet/* $INTERNAL_BUILD_DIR/board/buildernet/
 
     cd $INTERNAL_BUILD_DIR
     make $CONFIG_NAME
