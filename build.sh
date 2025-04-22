@@ -5,15 +5,15 @@ DOCKER_IMAGE="debian:bookworm"
 CONTAINER_NAME="buildroot-tmp"
 CONFIG_NAME="buildernet_defconfig"
 
-HOST_DIR="$PWD"
+HOST_DIR=$(pwd)
 BUILDROOT_DIR="$HOST_DIR/buildroot"
 CONFIGS_DIR="$HOST_DIR/configs"
 BOARD_DIR="$HOST_DIR/board/buildernet"
 ROOTFS_OVERLAY_DIR="$HOST_DIR/rootfs-overlay"
 HOST_OUTPUT_DIR="$HOST_DIR/artifacts"
 
-WORKDIR_IN_CONTAINER="/mnt"
-INTERNAL_BUILD_DIR="/buildroot-src"
+WORKDIR_IN_CONTAINER="/app"
+INTERNAL_BUILD_DIR="/usr/src/buildroot"
 
 mkdir -p "$HOST_OUTPUT_DIR"
 
@@ -49,4 +49,3 @@ docker run --rm \
   "
 
 echo "✅ Build complete. Artifacts available in: $HOST_OUTPUT_DIR"
-
